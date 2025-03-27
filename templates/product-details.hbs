@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Product Details</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/inventory">Back to Inventory</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>{{product.name}}</h2>
+        <p><strong>Price:</strong> {{product.price}} TL</p>
+        <p><strong>Inventory:</strong> {{product.inventory}}</p>
+        <p><strong>Category:</strong> {{product.category}}</p>
+        <p><strong>Description:</strong> {{product.description}}</p>
+        <p><strong>Discount:</strong> {{product.discount}}%</p>
+        <p><strong>Expiry Date:</strong> {{product.expiryDate}}</p>
+        <p><strong>Low Stock Threshold:</strong> {{product.lowStockThreshold}}</p>
+        <p><strong>ESL Code:</strong> {{product.eslCode}}</p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Retail Management System. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

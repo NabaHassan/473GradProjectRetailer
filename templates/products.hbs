@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Products Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/add-product">Add Product</a></li>
+                <li><a href="/inventory">Inventory</a></li>
+                <li><a href="/low-stock-alerts">Low Stock Alerts</a></li> <!-- Added Link -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>{{message}}</h2>
+        <p>Product added successfully. You can add more products, view the inventory, or check for low-stock alerts.</p>
+
+        <a href="/add-product">Add Another Product</a>
+        <a href="/low-stock-alerts" class="alert-link">View Low Stock Alerts</a> <!-- Added Button -->
+    </main>
+    <footer>
+        <p>&copy; 2024 Retail Management System. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

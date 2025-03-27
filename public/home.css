@@ -1,0 +1,208 @@
+.app-header {
+    display: flex;
+    /* Use flexbox for horizontal layout */
+    justify-content: space-between;
+    /* Space between title and navigation */
+    align-items: center;
+    /* Align items vertically */
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    /* Light background */
+    border-bottom: 1px solid #ddd;
+    /* Subtle border at the bottom */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Optional shadow */
+}
+
+.app-header .title h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+}
+
+.app-header .top-nav {
+    display: flex;
+    /* Arrange links in a row */
+    gap: 20px;
+    /* Add space between navigation links */
+}
+
+.app-header .top-nav a {
+    text-decoration: none;
+    /* Remove underlines */
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    /* Black text */
+    transition: color 0.3s ease;
+    /* Smooth hover effect */
+}
+
+.app-header .top-nav a:hover {
+    color: #007bff;
+    /* Change to blue on hover */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    color: #000;
+}
+.sidebar .help-center {
+    margin-top: auto;
+}
+
+.manager-container {
+    background-color: #686666bb;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.manager-container .manager-name {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 0;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu ul li {
+    margin-bottom: 15px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+}
+
+.menu a.active {
+    font-weight: bold;
+    color: #000;
+}
+
+.help-center {
+    font-size: 14px;
+    color: #007bff;
+    text-align: left;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.main-header h1 {
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+}
+
+.search-bar button {
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-button,
+.connect-label-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.filter-button.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.connect-label-button {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.alerts {
+    margin-top: 20px;
+}
+
+.alerts h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.alert-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.alert-item p {
+    margin: 0;
+}
+
+.alert-item div {
+    flex: 1;
+}

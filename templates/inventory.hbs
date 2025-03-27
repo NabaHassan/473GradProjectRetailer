@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="inventory.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="title">
+            <h2>Electronic Shelf Labeling System</h2>
+        </div>
+        <nav class="top-nav">
+            <a href="/">Dashboard</a>
+            <a href="/inventory">Inventory</a>
+            <a href="/modify-product">Modify Product</a>
+            <a href="/low-stock-alerts">Stock Levels</a>
+        </nav>
+    </header>
+
+    <div class="inventory-container">
+        <aside class="sidebar">
+            <h3>Store Manager</h3>
+            <ul>
+                <li><a href="/">Overview</a></li>
+                <li><a href="/add-product">Add Product</a></li>
+                <li><a href="/low-stock-alerts">View Low Stock Alerts</a></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+            <h4>Customer Lists</h4>
+            <h4>Customer Groups</h4>
+            <div class="help-section">
+                <a href="/help-center">Help Center</a>
+                <a href="/community">Community</a>
+                <a href="/developer-docs">Developer Docs</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>Products</h1>
+                <button class="add-product-btn" onclick="window.location.href='/add-product'">Add Product</button>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search products">
+            </div>
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Type</th>
+                        <th>Vendor</th>
+                        <th>Price</th>
+                        <th>Inventory</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td><a href="/product-details/{{_id}}">{{name}}</a></td>
+                        <td><a href="/product-details/{{_id}}">{{category}}</a></td>
+                        <td>{{brandName}}</td>
+                        <td>{{price}} TL</td>
+                        <td>{{#if (eq inventory 0)}}Out of stock{{else}}In stock{{/if}}</td>
+                        <td>
+                            <a href="/edit-product/{{_id}}">Edit</a> |
+                            <a href="/delete-product/{{_id}}" class="delete-link">Delete</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+        <div class="footer">
+            <h6>&copy; 2024 Electronic Shelf Labeling System. All rights reserved.</h6>
+        </div>
+    </body>
+
+</html>

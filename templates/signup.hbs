@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Labeling System - Sign Up</title>
+    <link rel="stylesheet" href="signup.css">
+
+  <script>
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        console.log('Password:', password, 'Confirm Password:', confirmPassword); // Debugging
+
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<script>
+    function validatePhoneNumber(phone) {
+        const phonePattern = /^\+?\d{7,15}$/;
+        return phonePattern.test(phone);
+    }
+
+    document.querySelector(".signup-form").addEventListener("submit", function (event) {
+        const phone = document.getElementById('phone').value.trim();
+
+        if (!validatePhoneNumber(phone)) {
+            alert("Please enter a valid phone number.");
+            event.preventDefault();
+            return false;
+        }
+    });
+</script>
+
+
+
+</head>
+
+<body>
+    <div class="signup-container">
+        <h1>Electronic Labeling System</h1>
+        <h2>Create your account</h2>
+        <p>Sign up to start managing your store operations</p>
+<form class="signup-form" action="/signup" method="POST" onsubmit="return validateForm()">
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="John Doe" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="123@gmail.com" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+90 123 456 7890" required>
+    </div>
+    <div class="form-group">
+        <label for="store-name">Store Name</label>
+        <input type="text" id="store-name" name="storeName" placeholder="Molto Süpermarket DAÜ" required>
+    </div>
+    <div class="form-group">
+        <label for="store-address">Store Address</label>
+        <input type="text" id="store-address" name="storeAddress" placeholder="Store Address" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirmPassword" required>
+    </div>
+
+    <button type="submit" class="signup-button">Sign up</button>
+</form>
+
+        <p class="already-account">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+</body>
+
+</html>

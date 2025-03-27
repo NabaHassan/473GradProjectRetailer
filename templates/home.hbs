@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Shelf Labeling System - Dashboard</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<header class="app-header">
+    <div class="title">
+        <h2>Electronic Shelf Labeling System</h2>
+            </div>
+
+    <nav class="top-nav">
+        <a href="/">Dashboard</a>
+        <a href="/add-product">Add Product</a>
+        <a href="/modify-product">Modify Product</a>
+        <a href="/low-stock-alerts">Stock Levels</a>
+
+    </nav>
+</header>
+
+<body>
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <p class="manager-name"><strong>Store Manager: {{name}}</p>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/home" class="active">Dashboard</a></li>
+                    <li><a href="/inventory">Inventory</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="help-center">
+                <a href="#">Help Center</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Electronic Shelf Labels</h1>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for a label (Search Product ID or Product Name)">
+                    <button type="button">Search</button>
+                </div>
+                <div class="filters">
+                    <button class="filter-button active">All (3,000)</button>
+                    <button class="filter-button">Online (1,000)</button>
+                    <button class="filter-button">In Store (2,000)</button>
+                    <button class="filter-button">Out of Stock (200)</button>
+                    <button class="connect-label-button">Connect New Label</button>
+                </div>
+            </header>
+            <section class="alerts">
+                <h2>Critical Alerts</h2>
+                {{#if lowStockProducts.length}}
+                {{#each lowStockProducts}}
+                <div class="alert-item">
+                    <div>
+            <p><strong>{{this.name}}</strong> - expiring on {{this.formattedExpiryDate}}</p>
+                        <p>Product ID: {{this._id}}</p>
+                    </div>
+                    <p>{{this.inventory}} items left</p>
+                </div>
+                {{/each}}
+                {{else}}
+                <p>No critical alerts.</p>
+                {{/if}}
+            </section>
+            
+            <section class="alerts">
+                <h2>Labels out of Service</h2>
+                {{#if outOfServiceLabels.length}}
+                {{#each outOfServiceLabels}}
+                <div class="alert-item">
+                    <div>
+                        <p><strong>{{this.name}}</strong></p>
+                        <p>Expiry Date: {{this.formattedExpiryDate}}</p>
+                        <p>Product ID: {{this._id}}</p>
+                    </div>
+                    <p>{{this.daysOutOfService}} days</p>
+                </div>
+                {{/each}}
+                {{else}}
+                <p>No labels out of service.</p>
+                {{/if}}
+            </section>
+
+        </main>
+    </div>
+</body>
+
+</html>

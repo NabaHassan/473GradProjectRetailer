@@ -1,0 +1,12 @@
+<h1>{{store.storeName}}</h1>
+<p>Address: {{store.storeAddress}}</p>
+
+<h2>Products</h2>
+<ul>
+    {{#each products}}
+    <li>{{this.name}} - ${{this.price}}</li>
+    {{/each}}
+</ul>
+
+
+
