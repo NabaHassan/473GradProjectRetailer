@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
 const hbs = require('hbs');
+const mongoose = require('mongoose'); // Make sure it's at the top
+
 
 const { User, Store, createProductModel } = require('./models');
 
@@ -55,14 +57,31 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/home', ensureAuthenticated, async (req, res) => {
+    console.log("🧠 Session user object:", req.session.user);
+
     const ProductModel = createProductModel(req.session.user.storeId);
     const products = await ProductModel.find();
+
+    const user = await User.findById(req.session.user.id).lean();
+    console.log("🛎 Notifications from DB:", user.notifications);
+
+    if (!user) {
+        console.error("❌ User not found for session ID:", req.session.user.id);
+        return res.redirect('/login');
+    }
+
+    const notifications = user.notifications || [];
+    console.log("🛎 Notifications for user:", notifications);
+
     res.render('home', {
-        name: req.session.user.name,
-        storeName: req.session.user.storeName,
-        products
+        name: user.name,
+        storeName: user.storeName,
+        products,
+        notifications
     });
 });
+
+
 
 app.get('/inventory', ensureAuthenticated, async (req, res) => {
     const ProductModel = createProductModel(req.session.user.storeId);
@@ -89,10 +108,10 @@ app.get('/delete-product/:id', ensureAuthenticated, async (req, res) => {
     res.redirect('/inventory');
 });
 
-app.get('/modify-product', ensureAuthenticated, async (req, res) => {
+app.get('/modify', ensureAuthenticated, async (req, res) => {
     const ProductModel = createProductModel(req.session.user.storeId);
-    const products = await ProductModel.find({});
-    res.render('modify-product', { products });
+    const products = await ProductModel.find();
+    res.render('modify', { products });
 });
 
 app.get('/edit-product/:id', ensureAuthenticated, async (req, res) => {
@@ -109,6 +128,85 @@ app.get('/edit-product/:id', ensureAuthenticated, async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+app.get('/notification/redirect/:productId', ensureAuthenticated, async (req, res) => {
+    const userId = req.session.user.id;
+    const productId = req.params.productId;
+
+    console.log("🔁 Notification clicked, productId =", productId);
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).send("User not found");
+
+        const notifications = user.notifications || [];
+        console.log("📦 ALL Notifications:", notifications);
+
+        // Try match with or without storeId
+        const notification = notifications.find(n =>
+            n.productId?.toString() === productId
+        );
+
+        if (!notification) {
+            console.log("❌ Notification not found");
+            return res.status(404).send("Notification not found");
+        }
+
+        const storeId = notification.storeId || req.session.user.storeId;  // ✅ fallback
+        if (!storeId) {
+            console.log("❌ storeId missing from notification and session");
+            return res.status(500).send("Missing store ID.");
+        }
+
+        const ProductModel = createProductModel(storeId);
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            console.log("❌ Product not found in store:", storeId);
+            return res.status(404).send("Product not found");
+        }
+
+        // Remove notification
+        await User.updateOne(
+            { _id: userId },
+            { $pull: { notifications: { productId: product._id } } }
+        );
+
+        console.log("✅ Notification removed. Redirecting to edit page.");
+        return res.redirect(`/edit-product/${productId}`);
+    } catch (err) {
+        console.error("❌ Redirect error:", err);
+        return res.status(500).send("Failed to redirect.");
+    }
+});
+
+
+app.post('/notifications/clear-all', ensureAuthenticated, async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+
+        await User.updateOne(
+            { _id: userId },
+            { $set: { notifications: [] } }
+        );
+
+        // 🔁 Optional: Refresh session user (if you store notifications in session)
+        const updatedUser = await User.findById(userId);
+        req.session.user = {
+            id: updatedUser._id,
+            name: updatedUser.name,
+            storeId: updatedUser.storeId,
+            storeName: updatedUser.storeName
+        };
+
+        res.redirect('/home');
+    } catch (err) {
+        console.error("❌ Failed to clear notifications:", err);
+        res.status(500).send("Could not clear notifications.");
+    }
+});
+
+
+
 
 
 app.post('/signup', async (req, res) => {
@@ -150,6 +248,10 @@ app.post('/signup', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
+
+
 
 
 app.post('/login', async (req, res) => {

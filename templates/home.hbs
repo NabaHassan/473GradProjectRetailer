@@ -11,23 +11,55 @@
 <header class="app-header">
     <div class="title">
         <h2>Electronic Shelf Labeling System</h2>
-            </div>
+    </div>
 
     <nav class="top-nav">
         <a href="/">Dashboard</a>
         <a href="/add-product">Add Product</a>
-        <a href="/modify-product">Modify Product</a>
+        <a href="/modify">Modify Product</a>
         <a href="/low-stock-alerts">Stock Levels</a>
+        <div class="notification-bell" onclick="toggleNotifications()">
+            🔔<span id="notification-count">{{notifications.length}}</span>
+            <div class="notification-box" id="notification-dropdown">
+                {{#if notifications.length}}
+                <div class="notification-actions" style="margin-bottom: 10px;">
+                    
+                </div>
+                <ul class="notification-list" style="max-height: 250px; overflow-y: auto; padding: 0 10px;">
+                    {{#each notifications}}
+                    <li class="notification-item"
+                        style="margin-bottom: 10px; list-style: none; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+                        {{#if this.productId}}
+                        <a href="/notification/redirect/{{this.productId}}"
+                            style="text-decoration: none; color: #333; display: block;">
+                            <strong>{{this.message}}</strong><br>
+                            <small>{{this.date}}</small>
+                        </a>
+                        {{else}}
+                        <strong>{{this.message}}</strong><br>
+                        <small>{{this.date}}</small>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                    <form action="/notifications/clear-all" method="POST" style="display:inline;">
+                        <button type="submit" class="notification-action-btn">Clear All</button>
+                    </form>
+                </ul>
+                {{else}}
+                <p class="no-notifications" style="padding: 10px;">No notifications available.</p>
+                {{/if}}
+            </div>
 
+
+        </div>
     </nav>
 </header>
 
 <body>
     <div class="dashboard-container">
-
         <!-- Sidebar -->
         <aside class="sidebar">
-            <p class="manager-name"><strong>Store Manager: {{name}}</p>
+            <p class="manager-name"><strong>Store Manager: {{name}}</strong></p>
             <nav class="menu">
                 <ul>
                     <li><a href="/home" class="active">Dashboard</a></li>
@@ -56,13 +88,14 @@
                     <button class="connect-label-button">Connect New Label</button>
                 </div>
             </header>
+
             <section class="alerts">
                 <h2>Critical Alerts</h2>
                 {{#if lowStockProducts.length}}
                 {{#each lowStockProducts}}
                 <div class="alert-item">
                     <div>
-            <p><strong>{{this.name}}</strong> - expiring on {{this.formattedExpiryDate}}</p>
+                        <p><strong>{{this.name}}</strong> - expiring on {{this.formattedExpiryDate}}</p>
                         <p>Product ID: {{this._id}}</p>
                     </div>
                     <p>{{this.inventory}} items left</p>
@@ -72,7 +105,7 @@
                 <p>No critical alerts.</p>
                 {{/if}}
             </section>
-            
+
             <section class="alerts">
                 <h2>Labels out of Service</h2>
                 {{#if outOfServiceLabels.length}}
@@ -90,9 +123,23 @@
                 <p>No labels out of service.</p>
                 {{/if}}
             </section>
-
         </main>
     </div>
+
+    <script>
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notification-dropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Optional: Close dropdown if clicked outside
+        window.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('notification-dropdown');
+            if (!e.target.closest('.notification-bell')) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 
 </html>

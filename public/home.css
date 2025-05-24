@@ -206,3 +206,89 @@ body {
 .alert-item div {
     flex: 1;
 }
+.notification-box {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.notification-box.active {
+    display: block;
+}
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.notification-bell span {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.notification-dropdown.active {
+    display: block;
+}
+
+.notification-item {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+.notification-item:hover {
+    background-color: #f7f7f7;
+}
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item p {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.notification-action-btn {
+    margin: 5px 5px 0 0;
+    padding: 5px 10px;
+    background-color: #e8e8e8;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.notification-action-btn:hover {
+    background-color: #dcdcdc;
+}

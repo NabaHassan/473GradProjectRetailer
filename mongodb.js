@@ -29,6 +29,17 @@ const userSchema = new mongoose.Schema({
     storeName: { type: String, required: true },
     storeAddress: { type: String, required: true },
     storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
+    notifications: [{
+    message: { type: String, required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId },
+    storeId: { type: mongoose.Schema.Types.ObjectId },   // ✅ ADD THIS
+    date: { type: Date, default: Date.now },
+    read: { type: Boolean, default: false }
+    }]
+
+
+
+
 });
 
 const User = userDB.model('User', userSchema);
@@ -54,7 +65,7 @@ const createProductModel = (storeId) => {
         storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     });
 
-    return storeDB.model(modelName, ProductSchema, `product_${storeId}`);
+    return storeDB.model(modelName, ProductSchema, `User_${storeId}`);
 };
 
 module.exports = {
