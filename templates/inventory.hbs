@@ -6,9 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
     <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="inventory.css">
+    <link rel="stylesheet" href="inventory.css">
     <link rel="stylesheet" href="home.css">
 </head>
+
+
+<script>
+   function uploadQR(name, price, referenceNumber, eslImage) {
+        const piIP = process.env.RASPBERRY_PI_IP;
+        const serverIP = process.env.NODE_SERVER_IP;
+        console.log("🖼 ESL Image received:", eslImage);
+
+        const imageUrl = `http://${serverIP}:3000${eslImage}`;
+        console.log("🔗 Sending image URL to Pi:", imageUrl);
+
+        fetch(`http://${piIP}:5000/display`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                image_url: imageUrl
+            })
+        });
+    }
+
+
+
+</script>
+
+
 
 <body>
     <header class="app-header">
@@ -58,6 +85,7 @@
                         <th>Price</th>
                         <th>Inventory</th>
                         <th>Actions</th>
+                        <th>Image</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,8 +98,14 @@
                         <td>{{#if (eq inventory 0)}}Out of stock{{else}}In stock{{/if}}</td>
                         <td>
                             <a href="/edit-product/{{_id}}">Edit</a> |
-                            <a href="/delete-product/{{_id}}" class="delete-link">Delete</a>
+                            <a href="/delete-product/{{_id}}" class="delete-link">Delete</a> |
+                            <form action="/upload-to-lcd" method="POST" style="display:inline;">
+                                <input type="hidden" name="productId" value="{{_id}}">
+                                <button type="submit">Upload QR</button>
+                            </form>
                         </td>
+                        <td><img src="{{eslImage}}" alt="ESL Image" width="60"></td>
+
                     </tr>
                     {{/each}}
                 </tbody>
@@ -79,9 +113,9 @@
         </main>
     </div>
 
-        <div class="footer">
-            <h6>&copy; 2024 Electronic Shelf Labeling System. All rights reserved.</h6>
-        </div>
-    </body>
+    <div class="footer">
+        <h6>&copy; 2024 Electronic Shelf Labeling System. All rights reserved.</h6>
+    </div>
+</body>
 
 </html>

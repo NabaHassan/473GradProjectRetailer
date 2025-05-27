@@ -10,30 +10,26 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<header class="app-header">
-    <div class="title">
-        <h2>Electronic Shelf Labeling System</h2>
-    </div>
-
-    <nav class="top-nav">
-        <a href="/">Dashboard</a>
-        <a href="/inventory">Inventory</a>
-        <a href="/modify-product">Modify Product</a>
-        <a href="/low-stock-alerts">Stock Levels</a>
-
-    </nav>
-</header>
-
-
 <body>
-    
+    <header class="app-header">
+        <div class="title">
+            <h2>Electronic Shelf Labeling System</h2>
+        </div>
+        <nav class="top-nav">
+            <a href="/">Dashboard</a>
+            <a href="/inventory">Inventory</a>
+            <a href="/modify-product">Modify Product</a>
+            <a href="/low-stock-alerts">Stock Levels</a>
+        </nav>
+    </header>
+
     <div class="container">
         <h1>Add Product</h1>
-        <form action="/add-product" method="POST">
-        <div class="form-group">
-            <label for="name">Product Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
+        <form action="/add-product" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
             <div class="form-group">
                 <label for="price">Price (TL):</label>
                 <input type="number" id="price" name="price" required>
@@ -96,9 +92,10 @@
                 <input type="number" id="lowStockThreshold" name="lowStockThreshold" placeholder="0" required>
             </div>
             <div class="form-group">
-                <label for="eslCode">ESL Code:</label>
-                <input type="text" id="eslCode" name="eslCode" required>
+                <label for="image">Product Image:</label>
+                <input type="file" id="image" name="eslImage" accept="image/*" required>
             </div>
+
             <div class="form-buttons">
                 <button type="submit">Save</button>
                 <button type="button" onclick="window.location.href='/home'">Cancel</button>

@@ -4,12 +4,28 @@ const session = require('express-session');
 const path = require('path');
 const hbs = require('hbs');
 const mongoose = require('mongoose'); // Make sure it's at the top
-
+const axios = require('axios');
+const multer = require('multer');
 
 const { User, Store, createProductModel } = require('./models');
+require('dotenv').config();
 
 const app = express();
 const port = 3000;
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+    }
+  });
+  const upload = multer({ storage: storage });
+  
+
+
 
 // Setup Handlebars and Middleware
 hbs.registerHelper('eq', (a, b) => a === b);
@@ -91,16 +107,26 @@ app.get('/inventory', ensureAuthenticated, async (req, res) => {
 
 app.get('/add-product', ensureAuthenticated, (req, res) => res.render('add-product'));
 
-app.post('/add-product', ensureAuthenticated, async (req, res) => {
+app.post('/add-product', ensureAuthenticated, upload.single('eslImage'), async (req, res) => {
     const ProductModel = createProductModel(req.session.user.storeId);
+  
+    if (!req.file) {
+      return res.status(400).send("No image file uploaded.");
+    }
+    console.log('File received:', req.file);
+    console.log('Image path:', `/uploads/${req.file?.filename}`);
+  
     const newProduct = new ProductModel({
-        ...req.body,
-            storeId: req.session.user.storeId,
-        expiryDate: req.body.expiryDate ? new Date(req.body.expiryDate) : null,
+      ...req.body,
+      eslImage: req.file ? `/uploads/${req.file.filename}` : "", // <-- this is key
+      storeId: req.session.user.storeId,
+      expiryDate: req.body.expiryDate ? new Date(req.body.expiryDate) : undefined,
     });
+  
     await newProduct.save();
     res.redirect('/inventory');
-});
+  });
+  
 
 app.get('/delete-product/:id', ensureAuthenticated, async (req, res) => {
     const ProductModel = createProductModel(req.session.user.storeId);
@@ -288,6 +314,30 @@ app.post('/update-product/:id', ensureAuthenticated, async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+app.post('/upload-to-lcd', ensureAuthenticated, async (req, res) => {
+    const productId = req.body.productId;
+    const piIP = process.env.RASPBERRY_PI_IP;
+    const serverIP = process.env.NODE_SERVER_IP;
+
+  
+    const ProductModel = createProductModel(req.session.user.storeId);
+    const product = await ProductModel.findById(productId);
+  
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+  
+    const imageUrl = `http://${serverIP}:3000${product.eslImage}`;
+    console.log("Sending image URL to Pi:", imageUrl);
+  
+    await axios.post(`http://${piIP}:5000/display`, {
+        image_url: imageUrl
+      });
+  
+    res.redirect('/inventory');
+  });
+    
 
 
 

@@ -59,7 +59,7 @@ const createProductModel = (storeId) => {
         description: { type: String },
         discount: { type: Number, default: 0 },
         expiryDate: { type: Date },
-        eslCode: { type: Number, required: true },
+        eslImage: { type: String }, // ESL Image URL
         lowStockThreshold: { type: Number, default: 0 },
         brandName: { type: String },
         storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },

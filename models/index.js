@@ -37,7 +37,7 @@ const createProductModel = (storeId) => {
         description: String,
         discount: Number,
         expiryDate: Date,
-        eslCode: Number,
+        eslImage: String,
         lowStockThreshold: Number,
         brandName: String,
         storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
